@@ -1,0 +1,250 @@
+<title>Prototype KDS Lite — Tab vs Split</title>
+<style>
+:root{
+  --paper:#F5F4F1; --card:#FFFFFF; --ink:#222524; --ink-2:#6B7370; --line:#DCD8D0;
+  --siap-bg:#E3F2EC; --siap-line:#199473; --siap-ink:#0A5C48; --siap-ink-2:#0F7A5F;
+  --btn-bg:#FFFFFF; --btn-line:#C9C4BB; --primary:#222524; --primary-ink:#FFFFFF;
+  --pulse:#FFF3D6;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --paper:#191B1A; --card:#242726; --ink:#ECEEEC; --ink-2:#9AA29E; --line:#3A3E3C;
+    --siap-bg:#12302A; --siap-line:#2AA486; --siap-ink:#8FE0C8; --siap-ink-2:#5FC4A6;
+    --btn-bg:#2C302E; --btn-line:#4A4F4C; --primary:#ECEEEC; --primary-ink:#191B1A;
+    --pulse:#4A3F22;
+  }
+}
+:root[data-theme="light"]{
+  --paper:#F5F4F1; --card:#FFFFFF; --ink:#222524; --ink-2:#6B7370; --line:#DCD8D0;
+  --siap-bg:#E3F2EC; --siap-line:#199473; --siap-ink:#0A5C48; --siap-ink-2:#0F7A5F;
+  --btn-bg:#FFFFFF; --btn-line:#C9C4BB; --primary:#222524; --primary-ink:#FFFFFF;
+  --pulse:#FFF3D6;
+}
+:root[data-theme="dark"]{
+  --paper:#191B1A; --card:#242726; --ink:#ECEEEC; --ink-2:#9AA29E; --line:#3A3E3C;
+  --siap-bg:#12302A; --siap-line:#2AA486; --siap-ink:#8FE0C8; --siap-ink-2:#5FC4A6;
+  --btn-bg:#2C302E; --btn-line:#4A4F4C; --primary:#ECEEEC; --primary-ink:#191B1A;
+  --pulse:#4A3F22;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--paper); color:var(--ink);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; line-height:1.45;}
+.wrap{max-width:1080px; margin:0 auto; padding:16px 16px 48px;}
+
+.modbar{display:flex; flex-wrap:wrap; gap:8px; align-items:center;
+  border:1px solid var(--line); background:var(--card); border-radius:10px;
+  padding:10px 12px; margin-bottom:14px;}
+.modbar .lbl{font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-2); margin-right:4px;}
+.seg{display:flex; border:1px solid var(--btn-line); border-radius:8px; overflow:hidden;}
+.seg button{border:0; background:var(--btn-bg); color:var(--ink); padding:8px 14px;
+  font-size:14px; font-weight:600; cursor:pointer;}
+.seg button.on{background:var(--primary); color:var(--primary-ink);}
+.modbar .util{border:1px solid var(--btn-line); background:var(--btn-bg); color:var(--ink);
+  border-radius:8px; padding:8px 12px; font-size:13px; font-weight:600; cursor:pointer;}
+.modbar .util:hover{border-color:var(--ink-2);}
+.stats{margin-left:auto; font-size:13px; color:var(--ink-2);
+  font-variant-numeric:tabular-nums; white-space:nowrap;}
+.stats b{color:var(--ink);}
+
+.app{border:1px solid var(--line); background:var(--card); border-radius:14px; padding:16px; min-height:480px;}
+.colhead{display:flex; align-items:baseline; gap:8px; margin:2px 2px 10px;}
+.colhead .t{font-size:14px; font-weight:700; letter-spacing:.02em;}
+.colhead .n{font-size:13px; color:var(--ink-2); font-variant-numeric:tabular-nums;}
+.colhead.siap .t{color:var(--siap-ink-2);}
+
+.grid-split{display:grid; grid-template-columns:minmax(0,1.8fr) minmax(0,1fr); gap:16px;}
+.col-siap-rail{border-left:1px solid var(--line); padding-left:16px;}
+.cards{display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:10px; align-content:start;}
+.cards.narrow{grid-template-columns:1fr;}
+
+.kcard{border:1px solid var(--line); background:var(--card); border-radius:12px;
+  padding:12px 12px 10px; transition:background .5s, border-color .3s;}
+.kcard .top{display:flex; justify-content:space-between; align-items:baseline; gap:8px;}
+.kcard .num{font-size:30px; font-weight:800; letter-spacing:-.01em; font-variant-numeric:tabular-nums;}
+.kcard .ch{font-size:11px; font-weight:600; color:var(--ink-2); border:1px solid var(--line);
+  border-radius:99px; padding:2px 8px; white-space:nowrap;}
+.kcard.siap{background:var(--siap-bg); border-color:var(--siap-line);}
+.kcard.siap .num{color:var(--siap-ink);}
+.kcard.siap .ch{color:var(--siap-ink-2); border-color:var(--siap-line);}
+.kcard.pulse{animation:pulse 1.6s ease-out 1;}
+@keyframes pulse{0%{background:var(--pulse);}100%{}}
+@media (prefers-reduced-motion: reduce){.kcard.pulse{animation:none;}}
+
+.acts{display:flex; gap:8px; margin-top:10px;}
+.acts button{min-height:52px; border-radius:10px; font-size:15px; font-weight:700;
+  cursor:pointer; touch-action:manipulation;}
+.acts button:focus-visible{outline:3px solid var(--siap-line); outline-offset:2px;}
+.b-siapkan{flex:1; border:0; background:var(--primary); color:var(--primary-ink);}
+.b-undo{flex:0 0 auto; padding:0 14px; border:1px solid var(--siap-line);
+  background:transparent; color:var(--siap-ink);}
+.b-selesai{flex:1; border:0; background:var(--siap-line); color:#fff;}
+
+.tabsbar{display:flex; gap:4px; border-bottom:1px solid var(--line); margin-bottom:12px;}
+.tabsbar button{border:0; background:transparent; color:var(--ink-2); font-size:15px;
+  font-weight:700; padding:10px 16px 12px; cursor:pointer;
+  border-bottom:3px solid transparent; font-variant-numeric:tabular-nums;}
+.tabsbar button.on{color:var(--ink); border-bottom-color:var(--ink);}
+.tabsbar button.on.siaptab{color:var(--siap-ink-2); border-bottom-color:var(--siap-line);}
+
+.empty{color:var(--ink-2); font-size:14px; padding:24px 8px; text-align:center;
+  border:1px dashed var(--line); border-radius:12px;}
+
+.snackwrap{position:sticky; bottom:12px; display:flex; justify-content:center; pointer-events:none; margin-top:16px;}
+.snack{pointer-events:auto; display:none; align-items:center; gap:14px;
+  background:var(--primary); color:var(--primary-ink); border-radius:10px;
+  padding:12px 16px; font-size:14px; font-weight:600; max-width:92%;}
+.snack.show{display:flex;}
+.snack button{border:0; background:transparent; color:inherit; font-size:14px;
+  font-weight:800; text-decoration:underline; cursor:pointer; padding:6px;}
+
+.note{font-size:13px; color:var(--ink-2); margin-top:14px;}
+@media (max-width:640px){
+  .grid-split{grid-template-columns:1fr;}
+  .col-siap-rail{border-left:0; padding-left:0; border-top:1px solid var(--line); padding-top:12px;}
+  .kcard .num{font-size:26px;}
+}
+</style>
+
+<div class="wrap">
+  <div class="modbar" role="toolbar" aria-label="Kontrol moderator">
+    <span class="lbl">Versi</span>
+    <div class="seg">
+      <button id="vA" class="on" onclick="setVersion('A')">A · Tab</button>
+      <button id="vB" onclick="setVersion('B')">B · Split</button>
+    </div>
+    <button class="util" onclick="addOrder()">+ Order masuk</button>
+    <button class="util" onclick="resetAll()">Reset skenario</button>
+    <span class="stats">Tap aksi: <b id="stTap">0</b> · Pindah tab: <b id="stNav">0</b></span>
+  </div>
+
+  <div class="app" id="app"></div>
+
+  <div class="snackwrap"><div class="snack" id="snack" role="status"></div></div>
+
+  <p class="note">Seed data = skenario S2 (6 Diproses, 2 Siap). Protokol: jalankan S1–S4 dari
+  <b>KDS_UserScenario.md</b> pada tiap versi, urutan versi diacak antar peserta. "Selesai" menghapus
+  permanen — sengaja, sesuai spec v0.1, untuk mengamati S5.</p>
+</div>
+
+<script>
+var seq = 0, tapCount = 0, navCount = 0;
+var version = 'A', activeTab = 'proses';
+var orders = [], snackTimer = null, pendingPulse = null;
+
+function seed(){
+  seq = 0; orders = [];
+  var s = [
+    ['A-039','Kasir','siap'], ['A-040','Self Order','siap'],
+    ['A-041','Self Order','proses'], ['A-042','Kasir','proses'],
+    ['A-043','Kiosk','proses'], ['Meja 7','Kiosk','proses'],
+    ['A-044','Kasir','proses'], ['Meja 3','Self Order','proses']
+  ];
+  for (var i=0;i<s.length;i++){
+    orders.push({id:'o'+(++seq), label:s[i][0], ch:s[i][1], st:s[i][2], t:seq});
+  }
+}
+
+var nextNum = 45;
+function addOrder(){
+  var ch = ['Kasir','Self Order','Kiosk'][Math.floor(Math.random()*3)];
+  var label = Math.random() < 0.25 ? ('Meja ' + (2+Math.floor(Math.random()*12)))
+                                   : ('A-0' + (nextNum++));
+  var o = {id:'o'+(++seq), label:label, ch:ch, st:'proses', t:seq};
+  orders.push(o); pendingPulse = o.id; render();
+}
+
+function byFifo(a,b){ return a.t - b.t; }
+
+function mark(id, st){
+  tapCount++;
+  var o = find(id); if(!o) return;
+  if (st === 'gone'){ orders = orders.filter(function(x){return x.id!==id;}); hideSnack(); }
+  else {
+    o.st = st; o.t = ++seq; pendingPulse = id;
+    if (st === 'siap' && version === 'A'){ showSnack(o); }
+    if (st === 'proses'){ hideSnack(); }
+  }
+  render();
+}
+function find(id){ for (var i=0;i<orders.length;i++) if(orders[i].id===id) return orders[i]; return null; }
+
+function showSnack(o){
+  var el = document.getElementById('snack');
+  el.innerHTML = '<span>' + esc(o.label) + ' ditandai siap</span>' +
+    '<button onclick="undoSnack(\'' + o.id + '\')">Urungkan</button>';
+  el.classList.add('show');
+  clearTimeout(snackTimer);
+  snackTimer = setTimeout(hideSnack, 5000);
+}
+function hideSnack(){ clearTimeout(snackTimer); document.getElementById('snack').classList.remove('show'); }
+function undoSnack(id){ mark(id,'proses'); }
+
+function setVersion(v){
+  version = v; activeTab = 'proses'; hideSnack();
+  document.getElementById('vA').className = v==='A' ? 'on' : '';
+  document.getElementById('vB').className = v==='B' ? 'on' : '';
+  render();
+}
+function setTab(t){ if (t!==activeTab){ navCount++; } activeTab = t; render(); }
+
+function resetAll(){
+  tapCount = 0; navCount = 0; nextNum = 45; pendingPulse = null;
+  hideSnack(); seed(); render();
+}
+
+function esc(s){ return s.replace(/[&<>"']/g, function(c){
+  return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+
+function cardHtml(o, narrow){
+  var pulse = (o.id === pendingPulse) ? ' pulse' : '';
+  if (o.st === 'proses'){
+    return '<div class="kcard'+pulse+'">' +
+      '<div class="top"><span class="num">'+esc(o.label)+'</span><span class="ch">'+esc(o.ch)+'</span></div>' +
+      '<div class="acts"><button class="b-siapkan" onclick="mark(\''+o.id+'\',\'siap\')">Tandai siap</button></div>' +
+      '</div>';
+  }
+  return '<div class="kcard siap'+pulse+'">' +
+    '<div class="top"><span class="num">'+esc(o.label)+'</span><span class="ch">'+esc(o.ch)+'</span></div>' +
+    '<div class="acts">' +
+      '<button class="b-undo" onclick="mark(\''+o.id+'\',\'proses\')">Undo</button>' +
+      '<button class="b-selesai" onclick="mark(\''+o.id+'\',\'gone\')">Selesai</button>' +
+    '</div></div>';
+}
+
+function listHtml(arr, narrow){
+  if (!arr.length) return '<div class="empty">Tidak ada order</div>';
+  var h = '<div class="cards' + (narrow ? ' narrow' : '') + '">';
+  for (var i=0;i<arr.length;i++) h += cardHtml(arr[i], narrow);
+  return h + '</div>';
+}
+
+function render(){
+  var proses = orders.filter(function(o){return o.st==='proses';}).sort(byFifo);
+  var siap   = orders.filter(function(o){return o.st==='siap';}).sort(byFifo);
+  var app = document.getElementById('app');
+
+  if (version === 'A'){
+    var h = '<div class="tabsbar" role="tablist">' +
+      '<button role="tab" aria-selected="'+(activeTab==='proses')+'" class="'+(activeTab==='proses'?'on':'')+'" onclick="setTab(\'proses\')">Diproses ('+proses.length+')</button>' +
+      '<button role="tab" aria-selected="'+(activeTab==='siap')+'" class="'+(activeTab==='siap'?'on siaptab':'')+'" onclick="setTab(\'siap\')">Siap ('+siap.length+')</button>' +
+      '</div>';
+    h += listHtml(activeTab==='proses' ? proses : siap, false);
+    app.innerHTML = h;
+  } else {
+    app.innerHTML =
+      '<div class="grid-split">' +
+        '<div><div class="colhead"><span class="t">Diproses</span><span class="n">('+proses.length+')</span></div>' +
+          listHtml(proses, false) + '</div>' +
+        '<div class="col-siap-rail"><div class="colhead siap"><span class="t">Siap diambil</span><span class="n">('+siap.length+')</span></div>' +
+          listHtml(siap, true) + '</div>' +
+      '</div>';
+  }
+
+  document.getElementById('stTap').textContent = tapCount;
+  document.getElementById('stNav').textContent = navCount;
+  pendingPulse = null;
+}
+
+seed(); render();
+</script>

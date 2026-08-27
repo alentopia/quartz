@@ -1,0 +1,40 @@
+{
+	"nodes":[
+		{"id":"1111111111111111","type":"group","x":-340,"y":-140,"width":2980,"height":1460,"label":"Self Order — Keranjang s.d. Berhasil (draft, perlu konfirmasi)"},
+		{"id":"1111111111111112","type":"text","text":"Prasyarat: setting AOL sudah selesai","x":-300,"y":-100,"width":900,"height":50},
+		{"id":"2222222222222221","type":"text","text":"User scan QR","x":-300,"y":100,"width":260,"height":90},
+		{"id":"2222222222222222","type":"text","text":"Halaman Menu\n(tarik data POS + setting AOL)","x":10,"y":335,"width":280,"height":120},
+		{"id":"2222222222222225","type":"text","text":"Popup Negative\n(stock/SPA/promo tidak valid)","x":760,"y":490,"width":260,"height":100,"color":"1"},
+		{"id":"2222222222222224","type":"text","text":"Cek validitas\nstock / SPA / promo","x":760,"y":280,"width":260,"height":110,"color":"3"},
+		{"id":"2222222222222223","type":"text","text":"Halaman Keranjang\n(tarik data APOS: promo, SPA, stock)","x":400,"y":-20,"width":280,"height":120},
+		{"id":"2222222222222226","type":"text","text":"Halaman Konfirmasi Pesanan\nHarga fix, tidak bisa diubah\n(kecuali balik ke Keranjang)","x":1140,"y":-75,"width":280,"height":130},
+		{"id":"2222222222222227","type":"text","text":"Pilih metode\nQR / REF","x":1360,"y":200,"width":240,"height":100,"color":"3"},
+		{"id":"2222222222222228","type":"text","text":"[Jalur REF] APOS: order muncul\nstatus \"Sedang Diproses / Dibayar\" (REF#)","x":1800,"y":-100,"width":300,"height":120},
+		{"id":"222222222222222e","type":"text","text":"[Jalur QR] Bayar QRIS\n(auto-confirm, tanpa kasir)","x":2160,"y":190,"width":300,"height":110,"color":"5"},
+		{"id":"222222222222222a","type":"text","text":"Table Management (POS)\nmeja jadi \"Terisi\" + no. Order/REF\n(REF = penanda pesanan)","x":1780,"y":685,"width":320,"height":140},
+		{"id":"222222222222222d","type":"text","text":"Halaman Berhasil\n(tampil nomor REF)","x":1140,"y":590,"width":280,"height":140,"color":"4"},
+		{"id":"222222222222222c","type":"text","text":"User klik\n\"Update Status Pesanan\"","x":1060,"y":1060,"width":260,"height":90},
+		{"id":"222222222222222b","type":"text","text":"[Jalur REF] POS klaim sudah dibayar\n→ kirim status ke Self Order / Web","x":1930,"y":1095,"width":300,"height":110},
+		{"id":"2222222222222230","type":"text","text":"REF# ditampilkan sbg penanda di:\n• POS — Detail Meja Terisi\n• Self Order — halaman Konfirmasi/Berhasil","x":2150,"y":660,"width":320,"height":140},
+		{"id":"2222222222222229","type":"text","text":"Bayar ke kasir\n(konfirmasi manual)","x":1690,"y":345,"width":260,"height":90}
+	],
+	"edges":[
+		{"id":"3333333333333301","fromNode":"2222222222222221","fromSide":"right","toNode":"2222222222222222","toSide":"left","label":"scan QR"},
+		{"id":"3333333333333302","fromNode":"2222222222222222","fromSide":"right","toNode":"2222222222222223","toSide":"left","label":"klik \"Lihat Keranjang\""},
+		{"id":"3333333333333303","fromNode":"2222222222222223","fromSide":"right","toNode":"2222222222222224","toSide":"left","label":"klik \"Konfirmasi Keranjang\""},
+		{"id":"3333333333333304","fromNode":"2222222222222224","fromSide":"bottom","toNode":"2222222222222225","toSide":"top","color":"1","label":"ada yang habis/berubah"},
+		{"id":"3333333333333305","fromNode":"2222222222222225","fromSide":"left","toNode":"2222222222222223","toSide":"bottom","label":"kembali ke Keranjang"},
+		{"id":"3333333333333306","fromNode":"2222222222222224","fromSide":"right","toNode":"2222222222222226","toSide":"left","label":"semua masih valid"},
+		{"id":"3333333333333307","fromNode":"2222222222222226","fromSide":"bottom","toNode":"2222222222222223","toSide":"top","label":"user ubah pesanan"},
+		{"id":"3333333333333308","fromNode":"2222222222222226","fromSide":"right","toNode":"2222222222222227","toSide":"left","label":"pilih metode bayar"},
+		{"id":"3333333333333309","fromNode":"2222222222222227","fromSide":"right","toNode":"2222222222222228","toSide":"left","label":"REF"},
+		{"id":"333333333333330f","fromNode":"2222222222222227","fromSide":"right","toNode":"222222222222222e","toSide":"left","label":"QR"},
+		{"id":"333333333333330a","fromNode":"2222222222222228","fromSide":"bottom","toNode":"2222222222222229","toSide":"top","label":"REF# tersimpan"},
+		{"id":"333333333333330b","fromNode":"2222222222222229","fromSide":"bottom","toNode":"222222222222222a","toSide":"top","label":"bayar kasir → konfirmasi manual"},
+		{"id":"3333333333333310","fromNode":"222222222222222e","fromSide":"bottom","toNode":"222222222222222a","toSide":"top","color":"5","label":"auto-confirm, table langsung terisi"},
+		{"id":"333333333333330c","fromNode":"222222222222222a","fromSide":"bottom","toNode":"222222222222222b","toSide":"top","label":"(jalur REF) POS klaim sudah dibayar"},
+		{"id":"333333333333330d","fromNode":"222222222222222b","fromSide":"left","toNode":"222222222222222c","toSide":"right","label":"kirim status ke Self Order/Web"},
+		{"id":"333333333333330e","fromNode":"222222222222222c","fromSide":"top","toNode":"222222222222222d","toSide":"bottom","label":"klik \"Update Status Pesanan\""},
+		{"id":"3333333333333311","fromNode":"222222222222222a","fromSide":"top","toNode":"222222222222222d","toSide":"right","color":"5","label":"(jalur QR) otomatis realtime, tanpa klaim manual"}
+	]
+}
